@@ -13,7 +13,7 @@ from store.decorators import signin_required,owner_permission_required
 
 
 KEY_ID="rzp_test_qEfodDQFfhXaCq"
-KEY_SECRET="42J5m041xFFF9T14x7bgIqB2"
+
 
 
 
@@ -185,6 +185,12 @@ class CheckOutView(View):
                 data = { "amount": order_obj.get_order_total*100, "currency": "INR", "receipt": "order_rcptid_11" }
                 payment = client.order.create(data=data)
                 print("payment initiate", payment)
+                context={
+                    "key":KEY_ID,
+                    "order_id":payment.get("id"),
+                    "amount":payment.get("amount")
+                }
+                return render(request,"payment.html",{"context":context})
 
             return redirect("index")
 
